@@ -1,0 +1,93 @@
+.reveal h1,
+.reveal h2,
+.reveal em {
+    color: #42affa;
+}
+.reveal header {
+    font-size: 0.8em;
+    margin-bottom: 4em;
+}
+
+.reveal ul,
+.reveal p {
+    margin-top: 2em;
+    text-align: justify;
+    font-size: 0.9em;
+}
+
+.reveal div + ul {
+    list-style-type: none;
+    text-align: center;
+    font-size: 0.8em;
+}
+
+.reveal code span {
+    font-size: 1em;
+}
+
+.reveal span {
+    font-size: 0.6em;
+}
+
+.reveal code {
+    font-size: 0.8em;
+    color: #b5533c;
+}
+
+.reveal pre code {
+    font-family: Consolas, Courier New, monospace;
+    font-size: 0.8em;
+    padding: 1em;
+}
+
+.reveal pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-all;
+    overflow: auto;
+    tab-width: 4;
+    color: #fff;
+    background: #333;
+    border-radius: .15em;
+    max-width: 1026.6666666666665px;
+    font-family: monospace,monospace;
+    font-weight: bold;
+}
+
+.reveal p::before {
+    content: "Descrição: ";
+    display: block;
+    color: #b5533c;
+}
+
+.reveal table {
+    margin-top: 2em;
+    font-size: 0.6em;
+}
+
+.reveal .sintax {
+    background: #e4f0f5;
+    white-space: pre-wrap;
+    border: 0 solid #3f87a6;
+    color: #333;
+    font-family: consolas,monaco,"Andale Mono",monospace;
+    font-size: 0.78em;
+    font-style: normal;
+    font-weight: 400;
+    overflow: auto;
+}
+
+.reveal .sintax::before {
+    content: "Sintaxe:";
+    color: #b5533c;
+    display: block;
+}
+
+.reveal .slide-number {
+    left: 8px;
+    bottom: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #42affa;
+    background-color: rgba(0, 0, 0, 0);
+}

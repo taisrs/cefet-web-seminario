@@ -1,0 +1,354 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Seminário - APIs do HTML5</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+		<link rel="stylesheet" href="css/general.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<!-- SLIDE 1 -->
+				<section>
+					<header>
+						<div>Programação Web CEFET-MG 2018/01</div>
+					</header>
+					<div>
+						<h1>APIs do HTML5</h1>
+					</div>
+					<ul>
+						<li>Gabriel Pires de Miranda Magalhães</li>
+						<li>Taís Rocha Silva</li>
+						<li>Vinícius Magalhães D'Assunção</li>
+					</ul>
+				</section>
+
+				<!-- SLIDE 2 -->
+				<section>
+					<h3>APIs de Acesso ao Hardware</h2>
+					<ul>
+						<li><em>Ambiente Light Sensor API</em> <span>(API do Sensor de Luz Ambiente)</span></li>
+						<li><em>Battery Status API</em> <span>(API de Estado da Bateria)</span></li>
+						<li><em>Proximity API</em> <span>(API de Proximidade)</span></li>
+						<li><em>Vibration API</em> <span>(API de Vibração)</span></li>
+					</ul>
+				</section>
+
+				<!-- SLIDE 3 -->
+				<section>
+					<h2><em>Ambiente Light Sensor API</em></h2>
+					<p>Fornece acesso ao sensor de luz ambiente, que permite que seu aplicativo detecte o nível de luz ao redor do dispositivo.</p>
+				</section>
+
+				<!-- SLIDE 4 -->
+				<section>
+					<h3><em>Light Events</em></h3>
+					<ul>
+						<li>Quando o sensor de luz de um dispositivo detecta uma mudança na luminosidade, ele notifica o navegador dessa alteração, que dispara um evento <code>DeviceLightEvent</code> para fornecer informações sobre a intensidade da luz (expressa em <em>lux</em>).</li>
+					</ul>
+				</section>
+
+				<!-- SLIDE 5 -->
+				<section>
+					<h3><em>Light Events</em></h3>
+					<ul>
+						<li>Propriedades: <code>DeviceLightEvent.value</code></li>
+						<li>Este evento pode ser capturado no nível do objeto <code>window</code> usando o método <code>addEventListener</code> (usando o nome do evento <code>devicelight</code>) ou anexando um manipulador de eventos à propriedade <code>window.ondevicelight</code>.</li>
+					</ul>
+				</section>
+
+				<!-- SLIDE 6 -->
+				<section>
+					<h3>Exemplo</h3>
+<pre class="hljs"><code>
+	window.addEventListener('devicelight', function(event) {
+	let html = document.getElementsByTagName('html')[0];
+	if (event.value < 50) {
+	    html.classList.add('darklight');
+	    html.classList.remove('brightlight');
+	  } else {
+	    html.classList.add('brightlight');
+	    html.classList.remove('darklight');
+	  }
+	});
+</code></pre>
+				</section>
+
+				<!-- SLIDE 7 -->
+				<section>
+					<h3>Can I use...</h3>
+					<img src="images/caniuse-ambient-light.png">
+				</section>
+
+				<section>
+					<h3>Referências</h3>
+					<ul>
+						<li><a href="https://developer.mozilla.org/pt-BR/docs/Web/API/Ambient_Light_Events">MDN - Ambient Light Events</a></li>
+					</ul>
+				</section>
+
+				<!-- SLIDE 8 -->
+				<section>
+					<h2><em>Battery Status API</em></h2>
+					<p>Fornece informações sobre nível de carregamento da bateria e quando ou não o dispositivo está plugado e carregando.</p>
+				</section>
+
+				<!-- SLIDE 9 -->
+				<section>
+					<h3><em>BatteryManager Events</em></h3>
+					<ul>
+						<li>Estende <code>Window.navigator</code> com uma propriedade <code>navigator.getBattery</code> que é um objeto <code>BatteryManager</code>, e adiciona alguns novos eventos que você pode receber para monitorar o status da bateria.</li>
+					</ul>
+				</section>
+
+				<!-- SLIDE 10 -->
+				<section>
+					<h3><em>BatteryManager Events</em></h3>
+					<table>
+          				<thead>
+            				<tr>
+              					<th>manipulador de eventos</th>
+              					<th>tipo de evento do manipulador de eventos</th>
+            				</tr>
+          				</thead>
+          				<tbody>
+            				<tr>
+              					<td><strong><code>onchargingchange</code></strong></td>
+              					<td><code>chargingchange</code></td>
+            				</tr>
+            				<tr>
+              					<td><strong><code>onchargingtimechange</code></strong></td>
+              					<td><code>chargingtimechange</code></td>
+            				</tr>
+            				<tr>
+              					<td><strong><code>ondischargingtimechange</code></strong></td>
+              					<td><code>dischargingtimechange</code></td>
+            				</tr>
+            				<tr>
+              					<td><strong><code>onlevelchange</code></strong></td>
+              					<td><code>levelchange</code></td>
+            				</tr>
+          				</tbody>
+        			</table>
+
+					<ul>
+						<li>Propriedades: <code>BatteryManager</code> (<code>charging</code>, <code>chargingTime</code>, <code>dischargingTime</code>, <code>level</code>)</li>
+					</ul>
+				</section>
+
+				<!-- SLIDE 11 -->
+				<section>
+					<h3>Exemplo</h3>
+<pre class="hljs"><code>
+let chargingStateEl = document.getElementById('chargingState');
+let chargingTimeEl = document.getElementById('chargingTime');
+let dichargeTimeEl = document.getElementById('dischargeTime');
+let levelEl = document.getElementById('level');
+
+function updateBatteryUI(battery) {
+  levelEl.textContent = (battery.level * 100) + '%';
+  chargingTimeEl.textContent = battery.chargingTime + ' Seconds';
+  dichargeTimeEl.textContent = battery.dischargingTime + ' Seconds';
+
+  if (battery.charging === true) {
+    chargingStateEl.textContent = 'Charging';
+  } else if (battery.charging === false) {
+    chargingStateEl.textContent = 'Discharging';
+  }
+}
+
+function monitorBattery(battery) {
+  // Atualização inicial.
+  updateBatteryUI(battery);
+
+  // Monitor para atualizações adicionais
+  battery.addEventListener('levelchange',
+    updateBatteryUI.bind(null, battery));
+  battery.addEventListener('chargingchange',
+    updateBatteryUI.bind(null, battery));
+  battery.addEventListener('dischargingtimechange',
+    updateBatteryUI.bind(null, battery));
+  battery.addEventListener('chargingtimechange',
+    updateBatteryUI.bind(null, battery));
+}
+
+if ('getBattery' in navigator) {
+  navigator.getBattery().then(monitorBattery);
+} else {
+  ChromeSamples.setStatus('The Battery Status API is not supported on ' +
+    'this platform.');
+}
+</code></pre>
+				</section>
+
+				<!-- SLIDE 12 -->
+				<section>
+					<h3>Can I use...</h3>
+					<img src="images/caniuse-battery.png">
+				</section>
+
+				<section>
+					<h3>Referências</h3>
+					<ul>
+						<li><a href="https://www.w3.org/TR/battery-status/">W3C Candidate Recommendation 07 July 2016</a></li>
+						<li><a href="https://w3c.github.io/battery/">W3C Editor's Draft 22 May 2018</a></li>
+						<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Battery_Status_API">MDN - Battery Status API</a></li>
+					</ul>
+				</section>
+
+				<!-- SLIDE 13 -->
+				<section>
+					<h2><em>Proximity API</em></h2>
+					<p>Permite dectar a proximidade do dispositivo a objetos próximos, como o rosto do usuário.</p>
+				</section>
+
+				<!-- SLIDE 14 -->
+				<section>
+					<h3><em>Proximity Events</em></h3>
+					<ul>
+						<li>Quando o sensor de proximidade do dispositivo detecta uma alteração entre o dispositivo e um objeto, ele notifica o navegador sobre essa alteração, que dispara um <code>DeviceProximityEvent</code> para qualquer alteração e um evento <code>UserProximityEvent</code> no caso de uma alteração mais acentuada.</li>
+					</ul>
+				</section>
+
+				<!-- SLIDE 15 -->
+				<section>
+					<h3><em>Proximity Events</em></h3>
+					<ul>
+						<li>Propriedades: <code>DeviceProximityEvent</code> (<code>value</code>, <code>min</code>, <code>max</code>), <code>UserProximityEvent.near</code> (<code>true</code> ou <code>false</code>)</li>
+						<li>Esse evento pode ser capturado no nível do objeto <code>window</code> usando o método <code>addEventListener</code> (usando o nome do evento <code>deviceproximity</code> ou <code>userproximity</code>) ou anexando um manipulador de eventos às propriedades <code>window.ondeviceproximity</code> ou <code>window.onuserproximity</code>.</li>
+					</ul>
+				</section>
+
+				<!-- SLIDE 16 -->
+				<section>
+					<h3>Exemplo</h3>
+<pre class="hljs"><code>
+	window.addEventListener('userproximity', function(event) {
+		if (event.near) {
+		// Vamos desligar a tela
+		navigator.mozPower.screenEnabled = false;
+		} else {
+		// Caso contrário, vamos ligar a tela
+		navigator.mozPower.screenEnabled = true;
+		}
+	});
+</code></pre>
+				</section>
+
+				<!-- SLIDE 17 -->
+				<section>
+					<h3>Can I use...</h3>
+					<img src="images/caniuse-proximity.png">
+				</section>
+
+				<section>
+					<h3>Referências</h3>
+					<ul>
+						<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Proximity_Events">MDN - Proximity Events</a></li>
+					</ul>
+				</section>
+
+				<!-- SLIDE 18 -->
+				<section>
+					<h2><em>Vibration API</em></h2>
+					<p>Permite aplicativos controlarem o hardware de vibração do dispositivo para coisas como feedback tátil em jogos. Não é a intenção para utilização como vibrações de notificação. </p>
+				</section>
+
+				<!-- SLIDE 19 -->
+				<section>
+					<ul>
+						<li>A vibração é controlada com um único método: <code>Navigator.vibrate()</code></li>
+						<li>Se o método não puder vibrar devido a parâmetros inválidos, ele retornará <code>false</code>, caso contrário, retornará <code>true</code>. Se o padrão levar a uma vibração muito longa, será truncado: o comprimento máximo depende de cada implementação.</li>
+						<code class="sintax">let successBool = window.navigator.vibrate(pattern);</code>
+					</ul>
+				</section>
+
+				<!-- SLIDE 20 -->
+				<section>
+					<ul>
+						<li><strong><em>pattern</em></strong>: Fornece um padrão de intervalos de vibração e pausa. Cada valor indica um número de milissegundos para vibrar ou pausar, em alternância. Você pode fornecer um único valor (para vibrar uma vez por muitos milissegundos) ou uma matriz de valores para alternar a vibração, pausar e vibrar novamente.</li>
+					</ul>
+<pre class="hljs"><code>
+	window.navigator.vibrate(200); // Vibra por 200ms
+	window.navigator.vibrate([200]); // Vibra por 200ms
+	window.navigator.vibrate([100,30,100,30,100,200,200,30,200,30,200,200,100,30,100,30,100]); // Vibra 'SOS' em Morse
+</code></pre>
+				</section>
+
+				<section>
+					<h3>Exemplo</h3>
+<pre class="hljs"><code>
+	let vibrateInterval;
+
+	// Inicia a vibração
+	function startVibrate(duration) {
+		navigator.vibrate(duration);
+	}
+
+	// Interrompe a vibração
+	function stopVibrate() {
+		// Limpa o intervalo e para a vibração persistente
+		if(vibrateInterval) clearInterval(vibrateInterval);
+		navigator.vibrate(0);
+	}
+
+	// Inicia a vibração persistente em determinada duração e intervalo
+	// Assume que um valor numérico é dado
+	function startPersistentVibrate(duration, interval) {
+		vibrateInterval = setInterval(function() {
+			startVibrate(duration);
+		}, interval);
+	}
+</code></pre>
+				</section>
+
+				<!-- SLIDE 3 -->
+				<section>
+					<h3>Can I use...</h3>
+					<img src="images/caniuse-vibration.png">
+				</section>
+
+				<section>
+					<h3>Referências</h3>
+					<ul>
+						<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Vibration_API">MDN - Vibration API</a></li>
+					</ul>
+				</section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
